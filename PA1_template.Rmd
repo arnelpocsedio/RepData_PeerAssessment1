@@ -7,19 +7,69 @@ output:
 
 
 ## Loading and preprocessing the data
-
-
+```{r}
+unzip("activity.zip")
+activity = read.csv("activity.csv")
+head(activity)
+```
 
 ## What is mean total number of steps taken per day?
+```{r}
+dailysteps = aggregate(steps ~ date, data = activity, function(x) sum(x, na.rm = TRUE))
+hist(dailysteps$steps, main = "distrubution of total daily steps", 
+     xlab = "daily steps")
 
+mean(dailysteps$steps, na.rm = TRUE)
+median(dailysteps$steps, na.rm = TRUE)
+```
 
 
 ## What is the average daily activity pattern?
+```{r}
+fivemin_steps = aggregate(steps ~ interval, data = activity, function(x) mean(x, na.rm = TRUE))
+plot(fivemin_steps$interval, fivemin_steps$steps, type = "l")
 
-
+fivemin_steps[which.max(fivemin_steps$steps),]
+fivemin_steps[which(fivemin_steps$steps > 150),]
+# fivemin_steps_ts = ts(fivemin_steps$steps, start = 0, end = 2355, frequency = 5)
+# 
+# plot(fivemin_steps_ts)
+```
 
 ## Imputing missing values
+```{r}
+sum(is.na(activity))
+
+library(dplyr)
+activity2 = activity %>% group_by(interval) %>% 
+        mutate(steps = ifelse(is.na(steps), median(steps, na.rm = TRUE),
+                                                            steps))
+
+sum(is.na(activity2))
+
+dailysteps2 = aggregate(steps ~ date, data = activity2, 
+                        function(x) sum(x,na.rm = TRUE)) 
+
+hist(dailysteps2$steps, main = "distrubution of total daily steps", 
+     xlab = "daily steps")
+
+mean(dailysteps2$steps, na.rm = TRUE)
+median(dailysteps2$steps, na.rm = TRUE)
+
+```
 
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+```{r}
+library(timeDate)
+activity2$week = ifelse(isWeekday(activity2$date), "Weekday", "Weekend")
+
+weeksteps = aggregate(steps ~ interval + week, data = activity2, 
+                        function(x) mean(x,na.rm = TRUE)) 
+
+library(lattice)
+xyplot(steps ~ interval | week, data = weeksteps, type = "l", layout = c(1,2))
+```
+
