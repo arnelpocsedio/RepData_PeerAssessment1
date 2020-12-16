@@ -65,14 +65,15 @@ p = ggplot(data = fivemin_steps, aes(interval, steps)) + geom_line()
 p = p + scale_x_continuous(breaks = seq(0, 2400, by = 200))
 p
 
-fivemin_steps[which.max(fivemin_steps$steps),]
+maxstep = fivemin_steps[which.max(fivemin_steps$steps),]
+print(xtable(maxstep), type = "html")
 ```
 
 __Based from the time series plot above we can see that in general, maximum number of steps is taken between 800 to 1000th minute. More specifically, the interval with the maximum number of steps is 835 with about 206 steps__ (see table below also).
 
 ```{r}
-maxstep = fivemin_steps[fivemin_steps$steps>150,]
-print(xtable(maxstep), type = "html")
+maxstep2 = fivemin_steps[fivemin_steps$steps>150,]
+print(xtable(maxstep2), type = "html")
 
 ```
 
@@ -82,7 +83,9 @@ Previously we ignore the missing values and in this part we will impute them. We
 ```{r}
 miss = sum(is.na(activity))
 miss
+
 ```
+
 __There are `r miss` missing values.__ 
 
 We will use the median in place of the missing value. The code below uses the dplyr package to impute missing data. First,  it groups the data by the interval. It then checks if the steps are recored or it is a missing value. Finally, it replace the missing value with the median of the particular interval.

@@ -29,7 +29,7 @@ print(xtable(activity[8000:8010,]), type = "html")
 ```
 
 <!-- html table generated in R 3.6.2 by xtable 1.8-4 package -->
-<!-- Wed Dec 16 10:32:25 2020 -->
+<!-- Wed Dec 16 10:41:52 2020 -->
 <table border=1>
 <tr> <th>  </th> <th> steps </th> <th> date </th> <th> interval </th>  </tr>
   <tr> <td align="right"> 8000 </td> <td align="right">   5 </td> <td> 2012-10-28 </td> <td align="right"> 1835 </td> </tr>
@@ -109,22 +109,27 @@ p
 ![](PA1_template_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 ```r
-fivemin_steps[which.max(fivemin_steps$steps),]
+maxstep = fivemin_steps[which.max(fivemin_steps$steps),]
+print(xtable(maxstep), type = "html")
 ```
 
-    interval    steps
-104      835 206.1698
+<!-- html table generated in R 3.6.2 by xtable 1.8-4 package -->
+<!-- Wed Dec 16 10:41:55 2020 -->
+<table border=1>
+<tr> <th>  </th> <th> interval </th> <th> steps </th>  </tr>
+  <tr> <td align="right"> 104 </td> <td align="right"> 835 </td> <td align="right"> 206.17 </td> </tr>
+   </table>
 
 __Based from the time series plot above we can see that in general, maximum number of steps is taken between 800 to 1000th minute. More specifically, the interval with the maximum number of steps is 835 with about 206 steps__ (see table below also).
 
 
 ```r
-maxstep = fivemin_steps[fivemin_steps$steps>150,]
-print(xtable(maxstep), type = "html")
+maxstep2 = fivemin_steps[fivemin_steps$steps>150,]
+print(xtable(maxstep2), type = "html")
 ```
 
 <!-- html table generated in R 3.6.2 by xtable 1.8-4 package -->
-<!-- Wed Dec 16 10:32:28 2020 -->
+<!-- Wed Dec 16 10:41:55 2020 -->
 <table border=1>
 <tr> <th>  </th> <th> interval </th> <th> steps </th>  </tr>
   <tr> <td align="right"> 100 </td> <td align="right"> 815 </td> <td align="right"> 157.53 </td> </tr>
@@ -148,6 +153,7 @@ miss
 ```
 
 [1] 2304
+
 __There are 2304 missing values.__ 
 
 We will use the median in place of the missing value. The code below uses the dplyr package to impute missing data. First,  it groups the data by the interval. It then checks if the steps are recored or it is a missing value. Finally, it replace the missing value with the median of the particular interval.
