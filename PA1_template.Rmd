@@ -4,6 +4,9 @@ output:
   html_document:
     keep_md: true
 ---
+```{r setoptions, echo=TRUE, results='asis'}
+knitr:: opts_chunk$set(echo = TRUE, results = 'asis')
+```
 
 ### This is a data exploration of activity monitoring. We do this by answering some questions about the data.
 
@@ -17,7 +20,7 @@ activity = read.csv("activity.csv")
 ```
 
 We will name the dataset 'activity'. A snapshot of the dataset is shown below:
-```{r results='asis'}
+```{r }
 library(xtable)
 print(xtable(activity[8000:8010,]), type = "html")
 ```
@@ -67,7 +70,7 @@ fivemin_steps[which.max(fivemin_steps$steps),]
 
 __Based from the time series plot above we can see that in general, maximum number of steps is taken between 800 to 1000th minute. More specifically, the interval with the maximum number of steps is 835 with about 206 steps__ (see table below also).
 
-```{r results='asis'}
+```{r}
 maxstep = fivemin_steps[fivemin_steps$steps>150,]
 print(xtable(maxstep), type = "html")
 
