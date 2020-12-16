@@ -5,7 +5,7 @@ output:
     keep_md: true
 ---
 
-#This is a data exploration of activity monitoring. We do this by answering some questions about the data.
+### This is a data exploration of activity monitoring. We do this by answering some questions about the data.
 
 
 ## Loading and preprocessing the data
@@ -62,9 +62,10 @@ p = ggplot(data = fivemin_steps, aes(interval, steps)) + geom_line()
 p = p + scale_x_continuous(breaks = seq(0, 2400, by = 200))
 p
 
+fivemin_steps[which.max(fivemin_steps$steps),]
 ```
 
-__Based from the time series plot above we can see that in general, maximum number of steps is taken between 800 to 1000th minute. More specifically, the interval with the maximum number of steps is 835 with about 206 steps__ (see table below).
+__Based from the time series plot above we can see that in general, maximum number of steps is taken between 800 to 1000th minute. More specifically, the interval with the maximum number of steps is 835 with about 206 steps__ (see table below also).
 
 ```{r results='asis'}
 maxstep = fivemin_steps[fivemin_steps$steps>150,]
@@ -81,7 +82,8 @@ miss
 ```
 __There are `r miss` missing values.__ 
 
-We will use the median in place of the missing value. The code below uses the dplyr package to impute missing data. First,  it groups the data by the interval. It then checks if the steps are recored or a missing value. Finally, it replace the missing value with the median per of a particular interval.
+We will use the median in place of the missing value. The code below uses the dplyr package to impute missing data. First,  it groups the data by the interval. It then checks if the steps are recored or it is a missing value. Finally, it replace the missing value with the median of the particular interval.
+
 ```{r}
 library(dplyr)
 activity2 = activity %>% group_by(interval) %>% 
